@@ -1,47 +1,170 @@
 package com.example.openeyetakehome_amccanna.feature.main
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.openeyetakehome_amccanna.core.network.ApiClient
 import com.example.openeyetakehome_amccanna.core.ui.theme.OpeneyeTakeHomeAMcCannaTheme
+import androidx.lifecycle.lifecycleScope
+import com.example.openeyetakehome_amccanna.core.model.Post
+import com.example.openeyetakehome_amccanna.core.network.model.PostDto
+import com.example.openeyetakehome_amccanna.core.network.model.toPost
+import kotlinx.coroutines.launch
+
+val client = ApiClient()
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            OpeneyeTakeHomeAMcCannaTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Alex",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+            OpeneyeTakeHomeAMcCannaTheme(
+                dynamicColor = false
+            ) {
+                var postList by remember { mutableStateOf(emptyList<Post>()) }
+
+                LaunchedEffect(Unit) {
+                    try {
+                        postList = client.allPosts()
+                    } catch (e: Exception) {
+                        Log.e("Exception", "${e.message}")
+                    }
                 }
+
+                BuildScaffold(postList)
+            }
+        }
+
+        getFirstPost()
+    }
+
+
+    private fun getFirstPost() {
+        lifecycleScope.launch {
+            try {
+                val data: PostDto = client.getPost()
+                val post: Post = data.toPost()
+
+            } catch (e: Exception) {
+                Log.e("Exception", "${e.message}")
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun Greeting(posts: List<Post>, paddingValues: PaddingValues) {
+    if (posts.isNotEmpty()) {
+        LazyColumn (
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(paddingValues),
+        ) {
+            items(posts.size) { index ->
+                val post = posts[index]
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(2.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    ),
+                ) {
+                    Column (modifier = Modifier.padding(8.dp)) {
+                        Text(
+                            text = "${post.id}. ${post.title}",
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        ElevatedCard(
+                            elevation = CardDefaults.cardElevation(
+                                defaultElevation = 6.dp
+                            ),
+                            modifier = Modifier.padding(6.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                            ),
+                        ) {
+                            Text(
+                                text = post.body,
+                                modifier = Modifier.padding(12.dp),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        Text(text = "Loading")
+    }
 }
 
-@Preview(showBackground = true)
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GreetingPreview() {
-    OpeneyeTakeHomeAMcCannaTheme {
-        Greeting("Android")
+fun BuildScaffold(posts: List<Post>) {
+    var presses by remember { mutableIntStateOf(0) }
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = {
+            TopAppBar(
+                colors = topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                ),
+                title = {
+                    Text("Take home test")
+                }
+            )
+        },
+        bottomBar = {
+            BottomAppBar(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+            ) {}
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = { presses++ }) {
+                Icon(Icons.Default.Add, contentDescription = "Add")
+            }
+        }
+    ) {
+        Greeting(posts = posts, it)
     }
 }
