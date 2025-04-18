@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Openeye Take Home - A McCanna</string>
+    <string name="pre_made_posts">Pre-made posts</string>
+    <string name="custom_posts">Custom Posts</string>
+    <string name="title">Title</string>
+    <string name="body">Body</string>
+    <string name="welcome_text">Hello, welcome to my solo social media app. You can see posts which are made up, or make your own that nobody else will see.</string>
+    <string name="open_post">Open Post</string>
 </resources>

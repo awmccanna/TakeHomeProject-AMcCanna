@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="Theme.OpeneyeTakeHomeAMcCanna" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.OpeneyeTakeHomeAMcCanna" parent="Theme.MaterialComponents.DayNight.NoActionBar" />
 </resources>

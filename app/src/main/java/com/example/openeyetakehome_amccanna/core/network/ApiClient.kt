@@ -90,6 +90,7 @@ class ApiClient {
                         }
                     }
 
+                    println("returning post list")
                     return@withContext postList
                 } else {
                     throw Exception("Data not returned from api call")

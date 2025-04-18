@@ -1,7 +1,9 @@
 package com.example.openeyetakehome_amccanna.feature.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -36,19 +38,31 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
+import com.example.openeyetakehome_amccanna.R
 import com.example.openeyetakehome_amccanna.core.network.ApiClient
 import com.example.openeyetakehome_amccanna.core.ui.theme.OpeneyeTakeHomeAMcCannaTheme
-import androidx.lifecycle.lifecycleScope
 import com.example.openeyetakehome_amccanna.core.model.Post
 import com.example.openeyetakehome_amccanna.core.network.model.PostDto
 import com.example.openeyetakehome_amccanna.core.network.model.toPost
 import kotlinx.coroutines.launch
 
-val client = ApiClient()
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        val btnPreMadePosts: Button = findViewById(R.id.btnPreMadePosts)
+        val btnCustomPosts: Button = findViewById(R.id.btnCustomPosts)
+
+        btnPreMadePosts.setOnClickListener {
+            val intent = Intent(this, PreMadePostsActivity::class.java)
+            startActivity(intent)
+        }
+
+
+        /*
         enableEdgeToEdge()
         setContent {
             OpeneyeTakeHomeAMcCannaTheme(
@@ -67,28 +81,14 @@ class MainActivity : ComponentActivity() {
                 BuildScaffold(postList)
             }
         }
-
-        getFirstPost()
-    }
-
-
-    private fun getFirstPost() {
-        lifecycleScope.launch {
-            try {
-                val data: PostDto = client.getPost()
-                val post: Post = data.toPost()
-
-            } catch (e: Exception) {
-                Log.e("Exception", "${e.message}")
-            }
-        }
+         */
     }
 }
 
 @Composable
-fun Greeting(posts: List<Post>, paddingValues: PaddingValues) {
+fun Posts(posts: List<Post>, paddingValues: PaddingValues) {
     if (posts.isNotEmpty()) {
-        LazyColumn (
+        LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(paddingValues),
@@ -104,7 +104,7 @@ fun Greeting(posts: List<Post>, paddingValues: PaddingValues) {
                         contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                     ),
                 ) {
-                    Column (modifier = Modifier.padding(8.dp)) {
+                    Column(modifier = Modifier.padding(8.dp)) {
                         Text(
                             text = "${post.id}. ${post.title}",
                             style = MaterialTheme.typography.headlineSmall
@@ -121,7 +121,7 @@ fun Greeting(posts: List<Post>, paddingValues: PaddingValues) {
                             ),
                         ) {
                             Text(
-                                text = post.body,
+                                text = post.body ?: "",
                                 modifier = Modifier.padding(12.dp),
                                 style = MaterialTheme.typography.bodyMedium
                             )
@@ -165,6 +165,6 @@ fun BuildScaffold(posts: List<Post>) {
             }
         }
     ) {
-        Greeting(posts = posts, it)
+        Posts(posts = posts, it)
     }
 }
