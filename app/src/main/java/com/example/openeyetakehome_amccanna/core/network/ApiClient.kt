@@ -2,7 +2,6 @@ package com.example.openeyetakehome_amccanna.core.network
 
 import android.util.Log
 import com.example.openeyetakehome_amccanna.core.model.Post
-import com.example.openeyetakehome_amccanna.core.network.model.PostDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -16,7 +15,7 @@ class ApiClient {
         .build()
     private val basePostUrl = "https://jsonplaceholder.typicode.com"
 
-    suspend fun getPost(postId: Int = 1): PostDto {
+    suspend fun getPost(postId: Int = 1): Post {
         return withContext(Dispatchers.IO) {
             try {
                 val request = Request.Builder()
@@ -33,17 +32,15 @@ class ApiClient {
 
                     val data = JSONObject(responseData)
 
-                    val userId = data.optInt("userId", -1)
                     val id = data.optInt("id", -1)
                     val title = data.optString("title", "")
                     val body = data.optString("body", "")
 
-                    if (userId == -1 || id == -1) {
+                    if (id == -1) {
                         throw Exception("userId or id not found in response")
                     }
 
-                    return@withContext PostDto(
-                        userId,
+                    return@withContext Post(
                         id,
                         title,
                         body,

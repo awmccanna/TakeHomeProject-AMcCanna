@@ -1,12 +1,10 @@
 package com.example.openeyetakehome_amccanna.feature.main
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -30,24 +28,18 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
 import com.example.openeyetakehome_amccanna.R
-import com.example.openeyetakehome_amccanna.core.network.ApiClient
-import com.example.openeyetakehome_amccanna.core.ui.theme.OpeneyeTakeHomeAMcCannaTheme
 import com.example.openeyetakehome_amccanna.core.model.Post
-import com.example.openeyetakehome_amccanna.core.network.model.PostDto
-import com.example.openeyetakehome_amccanna.core.network.model.toPost
+import com.example.openeyetakehome_amccanna.core.repository.PostRepository
 import kotlinx.coroutines.launch
-
+import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,33 +47,16 @@ class MainActivity : ComponentActivity() {
         setContentView(R.layout.activity_main)
         val btnPreMadePosts: Button = findViewById(R.id.btnPreMadePosts)
         val btnCustomPosts: Button = findViewById(R.id.btnCustomPosts)
+        val postRepository: PostRepository by inject()
 
         btnPreMadePosts.setOnClickListener {
             val intent = Intent(this, PreMadePostsActivity::class.java)
             startActivity(intent)
         }
 
-
-        /*
-        enableEdgeToEdge()
-        setContent {
-            OpeneyeTakeHomeAMcCannaTheme(
-                dynamicColor = false
-            ) {
-                var postList by remember { mutableStateOf(emptyList<Post>()) }
-
-                LaunchedEffect(Unit) {
-                    try {
-                        postList = client.allPosts()
-                    } catch (e: Exception) {
-                        Log.e("Exception", "${e.message}")
-                    }
-                }
-
-                BuildScaffold(postList)
-            }
+        lifecycleScope.launch {
+            postRepository.loadPreMadePostsIfNeeded()
         }
-         */
     }
 }
 
