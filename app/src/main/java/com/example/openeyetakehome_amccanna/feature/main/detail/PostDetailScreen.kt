@@ -47,7 +47,7 @@ fun PostDetailScreen(postId: Int, postViewModel: PostViewModel) {
 
     var showDeleteDialog by remember { mutableStateOf(false) }
 
-    val livePost by postViewModel.getPostById(postId).observeAsState()
+    val livePost by postViewModel.getLivePostById(postId).observeAsState()
     var isEditing by remember { mutableStateOf(false) }
     var activeTitle by remember { mutableStateOf("") }
     var activeBody by remember { mutableStateOf("") }
@@ -117,7 +117,7 @@ fun PostDetailScreen(postId: Int, postViewModel: PostViewModel) {
                                 livePost?.let {
                                     val updatedPost =
                                         it.copy(title = activeTitle, body = activeBody)
-                                    postViewModel.savePost(
+                                    postViewModel.updatePost(
                                         it.copy(
                                             title = activeTitle,
                                             body = activeBody

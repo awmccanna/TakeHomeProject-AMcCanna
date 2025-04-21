@@ -1,12 +1,15 @@
 [versions]
 agp = "8.9.1"
 appcompat = "1.7.0"
+coreTesting = "2.2.0"
 koinAndroid = "4.0.4"
+koinTest = "3.2.0"
 kotlin = "2.0.21"
 coreKtx = "1.10.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
+kotlinxCoroutinesTest = "1.8.0"
 lifecycleRuntimeKtx = "2.6.1"
 activityCompose = "1.8.0"
 composeBom = "2024.09.00"
@@ -18,10 +21,13 @@ constraintlayout = "2.2.1"
 recyclerview = "1.4.0"
 cardview = "1.0.0"
 runtimeLivedata = "1.7.8"
+junitJunit = "4.12"
+espressoIntents = "3.6.1"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomVersion" }
@@ -41,12 +47,16 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroid" }
+koin-test = { module = "io.insert-koin:koin-test", version.ref = "koinTest" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
+junit-junit = { group = "junit", name = "junit", version.ref = "junitJunit" }
+androidx-espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents", version.ref = "espressoIntents" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

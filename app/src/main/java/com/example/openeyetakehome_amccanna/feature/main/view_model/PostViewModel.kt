@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.openeyetakehome_amccanna.core.model.Post
-import com.example.openeyetakehome_amccanna.core.repository.PostRepository
+import com.example.openeyetakehome_amccanna.core.repository.PostRepositoryInterface
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
 
-class PostViewModel(private val repository: PostRepository) : ViewModel() {
+class PostViewModel(private val repository: PostRepositoryInterface) : ViewModel() {
     private val _posts = MutableLiveData<List<Post>>()
     val posts: LiveData<List<Post>> = _posts
 
@@ -40,7 +40,7 @@ class PostViewModel(private val repository: PostRepository) : ViewModel() {
         }
     }
 
-    fun savePost(post: Post) {
+    fun updatePost(post: Post) {
         viewModelScope.launch {
             val updatedPost = post.copy(updatedAt = currentTimeString())
             repository.updatePost(updatedPost)
@@ -56,8 +56,12 @@ class PostViewModel(private val repository: PostRepository) : ViewModel() {
         }
     }
 
-    fun getPostById(id: Int): LiveData<Post> {
-        return repository.getPostLiveById(id)
+    suspend fun getPostById(id: Int): Post? {
+        return repository.getPostById(id)
+    }
+
+    fun getLivePostById(id: Int): LiveData<Post> {
+        return repository.getLivePostById(id)
     }
 
     private fun currentTimeString(): String {

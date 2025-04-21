@@ -19,7 +19,7 @@ import java.util.Locale
 class PostRepository(
     private val postDao: PostDao,
     private val sharedPreferences: SharedPreferences,
-) {
+) : PostRepositoryInterface {
     private val client = ApiClient()
 
     private fun currentTimeString(): String {
@@ -31,23 +31,27 @@ class PostRepository(
         }
     }
 
-    suspend fun all(): List<Post> = withContext(Dispatchers.IO) {
+    override suspend fun all(): List<Post> = withContext(Dispatchers.IO) {
         postDao.getAll()
     }
 
-    fun getPostLiveById(id: Int): LiveData<Post> {
-        return postDao.getPostLive(id)
+    override fun getLivePostById(id: Int): LiveData<Post> {
+        return postDao.getLivePostById(id)
     }
 
-    suspend fun getAllWhereCustom(isCustom: Boolean): List<Post> = withContext(Dispatchers.IO) {
+    override suspend fun getPostById(id: Int): Post? {
+        return postDao.getPostById(id)
+    }
+
+    override suspend fun getAllWhereCustom(isCustom: Boolean): List<Post> = withContext(Dispatchers.IO) {
         postDao.getAllWhereCustom(isCustom)
     }
 
-    suspend fun insertPost(post: Post) = withContext(Dispatchers.IO) {
+    override suspend fun insertPost(post: Post) = withContext(Dispatchers.IO) {
         postDao.insert(post)
     }
 
-    suspend fun insertPosts(posts: List<Post>) = withContext(Dispatchers.IO) {
+    override suspend fun insertPosts(posts: List<Post>) = withContext(Dispatchers.IO) {
         val now = currentTimeString()
         val withTimeStamps = posts.map { post ->
             post.copy(createdAt = now, updatedAt = now)
@@ -55,19 +59,19 @@ class PostRepository(
         postDao.insertAll(withTimeStamps)
     }
 
-    suspend fun updatePost(post: Post) = withContext(Dispatchers.IO) {
+    override suspend fun updatePost(post: Post) = withContext(Dispatchers.IO) {
         postDao.update(post)
     }
 
-    suspend fun deletePost(post: Post) = withContext(Dispatchers.IO) {
+    override suspend fun deletePost(post: Post) = withContext(Dispatchers.IO) {
         postDao.delete(post)
     }
 
-    suspend fun deleteAll() = withContext(Dispatchers.IO) {
+    override suspend fun deleteAll() = withContext(Dispatchers.IO) {
         postDao.deleteAll()
     }
 
-    suspend fun loadPreMadePostsIfNeeded(forceReload: Boolean = false) {
+    override suspend fun loadPreMadePostsIfNeeded(forceReload: Boolean) {
         withContext(Dispatchers.IO) {
             val hasLoadedPosts = sharedPreferences.getBoolean("has_premade_posts", false)
 
