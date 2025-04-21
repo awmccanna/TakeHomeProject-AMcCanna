@@ -1,5 +1,4 @@
-package com.example.openeyetakehome_amccanna.feature.main.detail
-
+package com.example.openeyetakehome_amccanna.feature.main.create
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,18 +8,15 @@ import com.example.openeyetakehome_amccanna.feature.main.view_model.PostViewMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class PostDetailActivity : ComponentActivity() {
+class PostCreateActivity : ComponentActivity() {
     private val postViewModel: PostViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val postId = intent.getIntExtra("post_id", -1)
-
-
         setContent {
             OpeneyeTakeHomeAMcCannaTheme {
-                PostDetailScreen(postId = postId, postViewModel = postViewModel)
+                PostCreateScreen(postViewModel = postViewModel)
             }
         }
     }

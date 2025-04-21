@@ -7,4 +7,6 @@
     <string name="welcome_text">Hello, welcome to my solo social media app. You can see posts which are made up, or make your own that nobody else will see.</string>
     <string name="open_post">Open Post</string>
     <string name="reset_all_premade_posts">Reset all premade posts</string>
+    <string name="create_new_post">Make a new post</string>
+    <string name="no_custom_posts_available">No custom posts available.</string>
 </resources>

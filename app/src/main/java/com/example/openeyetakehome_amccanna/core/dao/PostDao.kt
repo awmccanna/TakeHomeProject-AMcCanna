@@ -1,5 +1,6 @@
 package com.example.openeyetakehome_amccanna.core.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -26,7 +27,7 @@ interface PostDao {
     suspend fun deleteAll()
 
     @Query("Select * from posts where id = :id")
-    suspend fun getPost(id: Long): Post?
+    fun getPostLive(id: Int): LiveData<Post>
 
     @Query("Select * from posts")
     suspend fun getAll(): List<Post>

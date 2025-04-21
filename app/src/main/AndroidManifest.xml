@@ -27,7 +27,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".feature.main.PreMadePostsActivity" />
+        <activity android:name=".feature.main.CustomPostsActivity" />
         <activity android:name=".feature.main.detail.PostDetailActivity" />
+        <activity android:name=".feature.main.create.PostCreateActivity" />
     </application>
 
 </manifest>

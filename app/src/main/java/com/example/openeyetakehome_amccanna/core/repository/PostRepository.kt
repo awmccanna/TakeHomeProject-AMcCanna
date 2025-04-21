@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.util.Log
 import androidx.core.content.edit
+import androidx.lifecycle.LiveData
 import com.example.openeyetakehome_amccanna.core.dao.PostDao
 import com.example.openeyetakehome_amccanna.core.model.Post
 import com.example.openeyetakehome_amccanna.core.network.ApiClient
@@ -39,8 +40,8 @@ class PostRepository(
         postDao.getAll()
     }
 
-    suspend fun getPostById(id: Long): Post? = withContext(Dispatchers.IO) {
-        postDao.getPost(id)
+    fun getPostLiveById(id: Int): LiveData<Post> {
+        return postDao.getPostLive(id)
     }
 
     suspend fun getAllWhereCustom(isCustom: Boolean): List<Post> = withContext(Dispatchers.IO) {
@@ -48,9 +49,7 @@ class PostRepository(
     }
 
     suspend fun insertPost(post: Post) = withContext(Dispatchers.IO) {
-        val now = currentTimeString()
-        val withTimeStamps = post.copy(createdAt = now, updatedAt = now)
-        postDao.insert(withTimeStamps)
+        postDao.insert(post)
     }
 
     suspend fun insertPosts(posts: List<Post>) = withContext(Dispatchers.IO) {
@@ -62,12 +61,9 @@ class PostRepository(
     }
 
     suspend fun updatePost(post: Post) = withContext(Dispatchers.IO) {
-        val now = currentTimeString()
-        val updated = post.copy(updatedAt = now)
-        postDao.update(updated)
+        postDao.update(post)
     }
 
-    // Soft delete?
     suspend fun deletePost(post: Post) = withContext(Dispatchers.IO) {
         postDao.delete(post)
     }
@@ -77,19 +73,20 @@ class PostRepository(
     }
 
     suspend fun loadPreMadePostsIfNeeded(forceReload: Boolean = false) {
-        val hasLoadedPosts = sharedPreferences.getBoolean("has_premade_posts", false)
+        withContext(Dispatchers.IO) {
+            val hasLoadedPosts = sharedPreferences.getBoolean("has_premade_posts", false)
 
-        if (!hasLoadedPosts || forceReload) {
-            try {
-                val posts = client.allPosts()
-                insertPosts(posts)
+            if (!hasLoadedPosts || forceReload) {
+                try {
+                    val posts = client.allPosts()
+                    insertPosts(posts)
 
-                sharedPreferences.edit() { putBoolean("has_premade_posts", true) }
-                Log.d("loadInitialPostsIfNeeded", "Pre-made posts")
-            } catch (e: Exception) {
-                Log.e("loadInitialPostsIfNeeded", "${e.message}")
+                    sharedPreferences.edit() { putBoolean("has_premade_posts", true) }
+                    Log.d("loadInitialPostsIfNeeded", "Pre-made posts")
+                } catch (e: Exception) {
+                    Log.e("loadInitialPostsIfNeeded", "${e.message}")
+                }
             }
-
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.example.openeyetakehome_amccanna.feature.main
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.openeyetakehome_amccanna.R
 import com.example.openeyetakehome_amccanna.core.model.Post
-import com.example.openeyetakehome_amccanna.feature.main.detail.PostDetailActivity
 
 class PostRecyclerViewAdapter(
     private var posts: List<Post>,

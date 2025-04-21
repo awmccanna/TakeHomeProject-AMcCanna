@@ -44,13 +44,13 @@ class PreMadePostsActivity : AppCompatActivity() {
 
         adapter = PostRecyclerViewAdapter(emptyList()) { post ->
             val intent = Intent(this, PostDetailActivity::class.java).apply {
-                putExtra("post", post)
+                putExtra("post_id", post.id)
             }
 
             postEditLauncher.launch(intent)
         }
 
-        val recyclerView = findViewById<RecyclerView>(R.id.postRecyclerView).apply {
+        findViewById<RecyclerView>(R.id.postRecyclerView).apply {
             layoutManager = LinearLayoutManager(this@PreMadePostsActivity)
             this.adapter = this@PreMadePostsActivity.adapter
         }

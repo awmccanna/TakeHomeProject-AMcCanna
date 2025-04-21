@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.openeyetakehome_amccanna.core.dao.PostDao
 import com.example.openeyetakehome_amccanna.core.model.Post
 
-@Database(entities = [Post::class], version = 1)
+@Database(entities = [Post::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun postDao(): PostDao
 }
@@ -21,10 +21,11 @@ object DatabaseProvider {
     fun getDatabase(context: Context): AppDatabase {
         return INSTANCE ?: synchronized(this) {
             val instance = Room.databaseBuilder(
-                context.applicationContext,
-                AppDatabase::class.java,
-                DATABASE_NAME
-            ).build()
+                        context.applicationContext,
+                        AppDatabase::class.java,
+                        DATABASE_NAME
+                    ).fallbackToDestructiveMigration(true)
+                .build()
             INSTANCE = instance
             instance
         }
