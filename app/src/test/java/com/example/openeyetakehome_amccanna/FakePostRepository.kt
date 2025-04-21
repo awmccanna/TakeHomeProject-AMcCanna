@@ -54,6 +54,14 @@ class FakePostRepository : PostRepositoryInterface {
     }
 
     override suspend fun loadPreMadePostsIfNeeded(forceReload: Boolean) {
-        TODO("Not yet implemented")
+        if (posts.isEmpty() || forceReload) {
+            val preMadePosts = listOf(
+                Post(id = 1, title = "First title", body = "First post body text", isCustom = false),
+                Post(id = 2, title = "Second title", body = "Second post body text", isCustom = false),
+                Post(id = 3, title = "Third title", body = "Third post body text", isCustom = false)
+            )
+
+            posts.addAll(preMadePosts)
+        }
     }
 }
