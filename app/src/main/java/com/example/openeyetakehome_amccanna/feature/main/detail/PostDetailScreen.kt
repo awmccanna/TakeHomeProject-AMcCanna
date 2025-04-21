@@ -161,7 +161,7 @@ fun PostDetailScreen(postId: Int, postViewModel: PostViewModel) {
                             }
                         }
                         Text(
-                            text = activeBody ?: "",
+                            text = activeBody,
                             style = MaterialTheme.typography.bodyLarge,
                             modifier = Modifier.padding(top = 16.dp)
                         )

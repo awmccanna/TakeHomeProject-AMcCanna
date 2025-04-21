@@ -1,6 +1,5 @@
 package com.example.openeyetakehome_amccanna.core.repository
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.util.Log
@@ -10,16 +9,12 @@ import com.example.openeyetakehome_amccanna.core.dao.PostDao
 import com.example.openeyetakehome_amccanna.core.model.Post
 import com.example.openeyetakehome_amccanna.core.network.ApiClient
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.koin.android.ext.android.inject
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
-import androidx.lifecycle.lifecycleScope
-import org.koin.android.ext.android.inject
 
 class PostRepository(
     private val postDao: PostDao,
