@@ -4,7 +4,7 @@
     <string name="custom_posts">Custom Posts</string>
     <string name="title">Title</string>
     <string name="body">Body</string>
-    <string name="welcome_text">Hello, welcome to my solo social media app. You can see posts which are made up, or make your own that nobody else will see.</string>
+    <string name="welcome_text">Hello, welcome to my Solo Social Media app. You can make posts that nobody else will see, or see posts which are completely made up.</string>
     <string name="open_post">Open Post</string>
     <string name="reset_all_premade_posts">Reset all premade posts</string>
     <string name="create_new_post">Make a new post</string>
