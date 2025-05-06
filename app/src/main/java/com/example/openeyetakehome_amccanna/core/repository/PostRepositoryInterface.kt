@@ -14,4 +14,5 @@ interface PostRepositoryInterface {
     suspend fun deletePost(post: Post)
     suspend fun deleteAll()
     suspend fun loadPreMadePostsIfNeeded(forceReload: Boolean = false)
+    suspend fun premadePostCount(): Int
 }

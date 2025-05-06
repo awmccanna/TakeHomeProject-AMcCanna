@@ -9,4 +9,5 @@
     <string name="reset_all_premade_posts">Reset all premade posts</string>
     <string name="create_new_post">Make a new post</string>
     <string name="no_custom_posts_available">No custom posts available.</string>
+    <string name="random_post">Random Post</string>
 </resources>

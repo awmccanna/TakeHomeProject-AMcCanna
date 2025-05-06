@@ -30,7 +30,7 @@ class FakePostDao : PostDao {
         daoPosts.clear()
     }
 
-    override fun getPostById(id: Int): Post? {
+    override suspend fun getPostById(id: Int): Post? {
         return daoPosts.find { it.id == id }
     }
 
@@ -43,5 +43,9 @@ class FakePostDao : PostDao {
 
     override suspend fun getAllWhereCustom(isCustom: Boolean): List<Post> {
         return daoPosts.filter { it.isCustom == isCustom }
+    }
+
+    override suspend fun premadePostCount(): Int {
+        return daoPosts.count()
     }
 }

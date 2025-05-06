@@ -64,4 +64,8 @@ class FakePostRepository : PostRepositoryInterface {
             posts.addAll(preMadePosts)
         }
     }
+
+    override suspend fun premadePostCount(): Int {
+        return posts.count()
+    }
 }

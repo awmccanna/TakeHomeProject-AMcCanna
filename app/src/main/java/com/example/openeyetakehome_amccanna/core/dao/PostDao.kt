@@ -27,7 +27,7 @@ interface PostDao {
     suspend fun deleteAll()
 
     @Query("Select * from posts where id = :id")
-    fun getPostById(id: Int): Post?
+    suspend fun getPostById(id: Int): Post?
 
     @Query("Select * from posts where id = :id")
     fun getLivePostById(id: Int): LiveData<Post>
@@ -37,4 +37,7 @@ interface PostDao {
 
     @Query("Select * from posts where is_custom = :isCustom")
     suspend fun getAllWhereCustom(isCustom: Boolean): List<Post>
+
+    @Query("Select count(*) from posts where is_custom = 0")
+    suspend fun premadePostCount(): Int
 }

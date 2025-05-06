@@ -18,6 +18,10 @@ class PostViewModel(private val repository: PostRepositoryInterface) : ViewModel
     private val _posts = MutableLiveData<List<Post>>()
     val posts: LiveData<List<Post>> = _posts
 
+    init {
+        loadPreMadePosts()
+    }
+
     fun loadPreMadePosts() {
         viewModelScope.launch {
             _posts.value = repository.getAllWhereCustom(false)
@@ -62,6 +66,10 @@ class PostViewModel(private val repository: PostRepositoryInterface) : ViewModel
 
     fun getLivePostById(id: Int): LiveData<Post> {
         return repository.getLivePostById(id)
+    }
+
+    suspend fun premadePostCount(): Int {
+        return repository.premadePostCount()
     }
 
     private fun currentTimeString(): String {

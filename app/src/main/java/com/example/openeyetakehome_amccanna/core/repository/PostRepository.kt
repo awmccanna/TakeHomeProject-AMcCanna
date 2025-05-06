@@ -88,4 +88,8 @@ class PostRepository(
             }
         }
     }
+
+    override suspend fun premadePostCount(): Int {
+        return postDao.premadePostCount()
+    }
 }
